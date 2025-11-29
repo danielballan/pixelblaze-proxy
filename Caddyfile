@@ -1,0 +1,26 @@
+{
+	debug
+	order replace after encode
+}
+
+
+:8000 {
+    @websocket {
+        path /websocket
+    }
+
+    handle @websocket {
+	uri strip_prefix /websocket
+        reverse_proxy 192.168.86.250:81
+    }
+
+    handle {
+	# Replace 'ws://...:81/' with 'wss://.../websocket'
+	replace re "WebSocket\(\"ws:\/\/\"\+(e|t)\+\":81\/\"\)" "WebSocket(\"wss://\"+$1+\"/websocket\")"
+        reverse_proxy 192.168.86.250:80
+    }
+}
+
+:8001 {
+    redir https://{host}{uri} permanent
+}

@@ -1,0 +1,26 @@
+[Unit]
+Description=Caddy web server with replace-response plugin
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+# Build from the Containerfile
+Image=localhost/caddy-for-pixelblaze:latest
+ContainerName=pixelblaze-proxy
+
+# Volume mounts
+Volume=/etc/pixelblaze-proxy/Caddyfile:/etc/caddy/Caddyfile:Z
+Volume=/etc/pixelblaze-proxy/data:/data:Z
+Volume=/etc/pixelblaze-proxy/config:/config:Z
+
+# Network
+PublishPort=8000:8000
+PublishPort=8001:8001
+
+[Service]
+# Restart service when it exits
+Restart=always
+TimeoutStartSec=900
+
+[Install]
+WantedBy=multi-user.target default.target
