@@ -10,6 +10,12 @@ to `wss://...:443/websocket`. Proxy requests to `wss://...:443/websocket` to
 
 Place this repository at `/etc/pixelblaze-proxy`.
 
+**Edit this line in `pixelblaze-proxy.container` to match your Pixelblaze IP.**
+
+```
+Environment=PIXELBLAZE_IP=192.168.86.250
+```
+
 Build caddy with [custom replace-response][] plugin. The
 [official replace-response][] plugins requests that the backend send
 uncompressed responses. Pixelblaze unconditionally sends gzipped responses,
@@ -31,7 +37,8 @@ systemctl start pixelblaze-proxy
 systemctl status pixelblaze-proxy
 ```
 
-Use [Tailscale Services][] to route traffic.
+Use [Tailscale Services][] to route traffic. All application traffic is secure,
+over `443`. Port `80` provides an HTTP→HTTPS redirect as a convenience.
 
 ```
 tailscale serve --service=svc:leds --https=443 http://127.0.0.1:8000

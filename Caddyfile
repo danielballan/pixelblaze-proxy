@@ -5,22 +5,28 @@
 
 
 :8000 {
+
+    # Proxy wss://....:443/websocket to ws://...:81
+
     @websocket {
         path /websocket
     }
 
     handle @websocket {
 	uri strip_prefix /websocket
-        reverse_proxy 192.168.86.250:81
+        reverse_proxy {env.PIXELBLAZE_IP}:81
     }
+
+    # Rewrite the frontend to replace ws://...:81 with wss://...:443/websocket
 
     handle {
 	# Replace 'ws://...:81/' with 'wss://.../websocket'
 	replace re "WebSocket\(\"ws:\/\/\"\+(e|t)\+\":81\/\"\)" "WebSocket(\"wss://\"+$1+\"/websocket\")"
-        reverse_proxy 192.168.86.250:80
+        reverse_proxy {env.PIXELBLAZE_IP}:80
     }
 }
 
+# Redirect HTTP→HTTPS.
 :8001 {
     redir https://{host}{uri} permanent
 }

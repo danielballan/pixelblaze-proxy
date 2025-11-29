@@ -8,6 +8,8 @@ Wants=network-online.target
 Image=localhost/caddy-for-pixelblaze:latest
 ContainerName=pixelblaze-proxy
 
+Environment=PIXELBLAZE_IP=192.168.86.250
+
 # Volume mounts
 Volume=/etc/pixelblaze-proxy/Caddyfile:/etc/caddy/Caddyfile:Z
 Volume=/etc/pixelblaze-proxy/data:/data:Z
