@@ -2,9 +2,9 @@
 
 ## Approach
 
-Rewrite the WebSocket URLS from `ws://...:81` to `ws://...:443/websocket`.
-Proxy requests to `wss://...:443/websocket` to `ws://...:81` on the
-backend.
+Rewrite the WebSocket URLs in the Pixelblaze web application from `ws://...:81`
+to `wss://...:443/websocket`. Proxy requests to `wss://...:443/websocket` to
+`ws://...:81` on the backend.
 
 ## Setup
 
